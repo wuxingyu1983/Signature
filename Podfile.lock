@@ -1,0 +1,13 @@
+PODS:
+  - pop (1.0.9)
+  - PPSSignatureView (0.1.2)
+
+DEPENDENCIES:
+  - pop
+  - PPSSignatureView
+
+SPEC CHECKSUMS:
+  pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
+  PPSSignatureView: 746f1fc186dea15c248bc99cc64182f93af131b9
+
+COCOAPODS: 0.39.0
