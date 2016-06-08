@@ -24,6 +24,8 @@
     UIButton *themeBtn;
     UIImageView *tipsImgView;
     UIButton *arrowBtn;
+
+    UITapGestureRecognizer *tapGestureRecognizer;
 }
 
 @end
@@ -86,6 +88,12 @@
     tipsImgView.image = [UIImage imageNamed:@"tips"];
     tipsImgView.layer.opacity = 0.0;
     [self.view addSubview:tipsImgView];
+
+    tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                   action:@selector(hideAction)];
+    //设置成NO表示当前控件响应后会传播到其他控件上，默认为YES。
+    tapGestureRecognizer.enabled = NO;
+    [self.view addGestureRecognizer:tapGestureRecognizer];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -172,6 +180,8 @@
     posSignAnimation.toValue = @(184 + 520 / 2);
     posSignAnimation.duration = 0.5f;
     [signImgBakView.layer pop_addAnimation:posSignAnimation forKey:@"layerPositionYAnimation"];
+
+    tapGestureRecognizer.enabled = YES;
 }
 
 // 右侧隐藏事件
@@ -196,6 +206,8 @@
     posSignAnimation.toValue = @(self.view.center.x);
     posSignAnimation.duration = 0.5f;
     [signImgBakView.layer pop_addAnimation:posSignAnimation forKey:@"layerPositionYAnimation"];
+
+    tapGestureRecognizer.enabled = NO;
 }
 
 @end
