@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "SignViewController.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @interface AppDelegate ()
 
@@ -26,6 +27,7 @@
     self.window.rootViewController = navVC;
     
     [self.window makeKeyAndVisible];
+    [SVProgressHUD setMinimumDismissTimeInterval:2];
     
     return YES;
 }

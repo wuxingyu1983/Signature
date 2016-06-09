@@ -11,5 +11,6 @@
 @interface UploadViewController : UIViewController
 
 @property (strong, nonatomic) UIImage *signatureImage;
+@property (copy, nonatomic) NSString *pictureID;
 
 @end
