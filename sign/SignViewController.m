@@ -19,7 +19,7 @@
 #define BTN_WIDTH           200
 #define BTN_HEIGHT          100
 
-@interface SignViewController ()
+@interface SignViewController () <UploadViewControllerDelegate>
 {
     PPSSignatureView *signView;
     UploadViewController *uploadVC;
@@ -87,6 +87,13 @@
 }
 */
 
+#pragma mark - UploadViewControllerDelegate
+
+- (void)sendSuccessed
+{
+    [signView erase];
+}
+
 #pragma mark - private function
 
 - (void)clean
@@ -99,6 +106,7 @@
     UIImage *img = signView.signatureImage;
     if (img) {
         uploadVC = [[UploadViewController alloc] init];
+        uploadVC.delegate = self;
 /*
         if (nil == uploadVC || nil == uploadVC.pictureID) {
             // 第一次用，或者已经上传完了，新一次的

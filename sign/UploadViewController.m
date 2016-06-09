@@ -9,6 +9,8 @@
 #import "UploadViewController.h"
 #import <pop/POP.h>
 #import "ImageView.h"
+#import <AFNetworking/AFNetworking.h>
+#import <SVProgressHUD/SVProgressHUD.h>
 
 #define Screen_Height       ([[UIScreen mainScreen] bounds].size.height)
 #define Screen_Width        ([[UIScreen mainScreen] bounds].size.width)
@@ -228,8 +230,68 @@
             posSignAnimation.toValue = @(0 - signImgBakView.frame.size.height / 2);
             posSignAnimation.duration = 0.2f;
             [signImgBakView.layer pop_addAnimation:posSignAnimation forKey:@"layerPositionYAnimation"];
+            
+            // 提交
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+                NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject
+                                                                             delegate:nil
+                                                                        delegateQueue:[NSOperationQueue mainQueue]];
+                
+                NSString *strUrl;
+                if (1 == iSelected) {
+                    // 照片墙
+                    strUrl = [NSString stringWithFormat:@"http://120.203.18.7/server/cmd/send.do?flash=ZPQ_%@", self.pictureID];
+                }
+                else {
+                    // 主题墙
+                    strUrl = [NSString stringWithFormat:@"http://120.203.18.7/server/cmd/send.do?flash=HYC_%@", self.pictureID];
+                }
+                
+                NSURL * url = [NSURL URLWithString:strUrl];
+                
+                NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithURL:url
+                                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                                    if(error == nil)
+                                                                    {
+                                                                        NSDictionary *responseObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                                                       options:NSJSONReadingMutableContainers
+                                                                                                                                         error:nil];
+                                                                        if ([@"success" isEqualToString:[responseObject objectForKey:@"type"]]) {
+                                                                            if (self.delegate) {
+                                                                                [self.delegate sendSuccessed];
+                                                                            }
+                                                                            
+                                                                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                                                                [self.navigationController popViewControllerAnimated:YES];
+                                                                            });
+                                                                        }
+                                                                        else {
+                                                                            [self sendFailed];
+                                                                        }
+                                                                    }
+                                                                    else {
+                                                                        [self sendFailed];
+                                                                    }
+                                                                }];
+                
+                [dataTask resume];
+
+            });
         }
     }
+}
+
+- (void)sendFailed
+{
+    POPBasicAnimation *posSignAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionY];
+    posSignAnimation.toValue = @(self.view.center.y);
+    posSignAnimation.duration = 0.2f;
+    [signImgBakView.layer pop_addAnimation:posSignAnimation forKey:@"layerPositionYAnimation"];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD showErrorWithStatus:@"上传失败，请重试 !"];
+    });
 }
 
 @end

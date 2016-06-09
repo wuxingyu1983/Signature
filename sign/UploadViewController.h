@@ -8,9 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol UploadViewControllerDelegate <NSObject>
+
+- (void)sendSuccessed;
+
+@end
+
 @interface UploadViewController : UIViewController
 
 @property (strong, nonatomic) UIImage *signatureImage;
 @property (copy, nonatomic) NSString *pictureID;
+@property (strong, nonatomic) id<UploadViewControllerDelegate> delegate;
 
 @end
