@@ -8,13 +8,14 @@
 
 #import "UploadViewController.h"
 #import <pop/POP.h>
+#import "ImageView.h"
 
 #define Screen_Height       ([[UIScreen mainScreen] bounds].size.height)
 #define Screen_Width        ([[UIScreen mainScreen] bounds].size.width)
 
 @interface UploadViewController ()
 {
-    UIImageView *signImgBakView;
+    ImageView *signImgBakView;
     UIImageView *signImgView;
     
     NSInteger iSelected;
@@ -26,6 +27,7 @@
     UIButton *arrowBtn;
 
     UITapGestureRecognizer *tapGestureRecognizer;
+    UIPanGestureRecognizer *panGestureRecognizer;
 }
 
 @end
@@ -48,14 +50,14 @@
     [self.view addSubview:backBtn];
    
     // 签名图片
-    signImgBakView = [[UIImageView alloc] initWithFrame:CGRectMake(184, 256, 520, 312)];
+    signImgBakView = [[ImageView alloc] initWithFrame:CGRectMake(184, 256, 520, 312)];
     signImgBakView.image = [UIImage imageNamed:@"signbackground"];
     [self.view addSubview:signImgBakView];
-    
+
     signImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, signImgBakView.frame.size.width, signImgBakView.frame.size.height)];
     signImgView.image = self.signatureImage;
     [signImgBakView addSubview:signImgView];
-   
+
     // 左箭头
     arrowBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     arrowBtn.frame = CGRectMake(Screen_Width - 80, (Screen_Height - 80) / 2, 40, 80);
@@ -94,6 +96,11 @@
     //设置成NO表示当前控件响应后会传播到其他控件上，默认为YES。
     tapGestureRecognizer.enabled = NO;
     [self.view addGestureRecognizer:tapGestureRecognizer];
+    
+    panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                                                   action:@selector(handlePan:)];
+    panGestureRecognizer.enabled = NO;
+    [signImgBakView addGestureRecognizer:panGestureRecognizer];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -128,6 +135,7 @@
     iSelected = 1;
     [self refreshBtn];
     [self hideAction];
+    panGestureRecognizer.enabled = YES;
 }
 
 - (void)theme
@@ -135,6 +143,7 @@
     iSelected = 2;
     [self refreshBtn];
     [self hideAction];
+    panGestureRecognizer.enabled = YES;
 }
 
 - (void)refreshBtn
@@ -174,12 +183,12 @@
     POPBasicAnimation *posTermAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionX];
     posTermAnimation.toValue = @(Screen_Width - termBakView.frame.size.width / 2);
     posTermAnimation.duration = 0.5f;
-    [termBakView.layer pop_addAnimation:posTermAnimation forKey:@"layerPositionYAnimation"];
+    [termBakView.layer pop_addAnimation:posTermAnimation forKey:@"layerPositionXAnimation"];
     
     POPBasicAnimation *posSignAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionX];
     posSignAnimation.toValue = @(184 + 520 / 2);
     posSignAnimation.duration = 0.5f;
-    [signImgBakView.layer pop_addAnimation:posSignAnimation forKey:@"layerPositionYAnimation"];
+    [signImgBakView.layer pop_addAnimation:posSignAnimation forKey:@"layerPositionXAnimation"];
 
     tapGestureRecognizer.enabled = YES;
 }
@@ -200,14 +209,27 @@
     POPBasicAnimation *posTermAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionX];
     posTermAnimation.toValue = @(Screen_Width + termBakView.frame.size.width / 2);
     posTermAnimation.duration = 0.5f;
-    [termBakView.layer pop_addAnimation:posTermAnimation forKey:@"layerPositionYAnimation"];
+    [termBakView.layer pop_addAnimation:posTermAnimation forKey:@"layerPositionXAnimation"];
     
     POPBasicAnimation *posSignAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionX];
     posSignAnimation.toValue = @(self.view.center.x);
     posSignAnimation.duration = 0.5f;
-    [signImgBakView.layer pop_addAnimation:posSignAnimation forKey:@"layerPositionYAnimation"];
+    [signImgBakView.layer pop_addAnimation:posSignAnimation forKey:@"layerPositionXAnimation"];
 
     tapGestureRecognizer.enabled = NO;
+}
+
+- (void)handlePan:(UIPanGestureRecognizer *)recognizer
+{
+    if(recognizer.state == UIGestureRecognizerStateEnded) {
+        CGPoint velocity = [recognizer velocityInView:self.view];
+        if (velocity.y < -2000) {
+            POPBasicAnimation *posSignAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionY];
+            posSignAnimation.toValue = @(0 - signImgBakView.frame.size.height / 2);
+            posSignAnimation.duration = 0.2f;
+            [signImgBakView.layer pop_addAnimation:posSignAnimation forKey:@"layerPositionYAnimation"];
+        }
+    }
 }
 
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B619C4051D088688002DE025 /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B619C4041D088688002DE025 /* ImageView.m */; };
 		B620FE461D02BB0B008354CD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B620FE451D02BB0B008354CD /* main.m */; };
 		B620FE491D02BB0B008354CD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B620FE481D02BB0B008354CD /* AppDelegate.m */; };
 		B620FE4C1D02BB0B008354CD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B620FE4B1D02BB0B008354CD /* ViewController.m */; };
@@ -22,6 +23,8 @@
 		0C4C98CDDE1F283254AAE429 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		251CC128C59F023A0DD24661 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		5AB9BBBBE211568A4835B83E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B619C4031D088688002DE025 /* ImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageView.h; sourceTree = "<group>"; };
+		B619C4041D088688002DE025 /* ImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageView.m; sourceTree = "<group>"; };
 		B620FE411D02BB0B008354CD /* sign.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sign.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B620FE451D02BB0B008354CD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B620FE471D02BB0B008354CD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -82,6 +85,8 @@
 				B620FE471D02BB0B008354CD /* AppDelegate.h */,
 				B620FE481D02BB0B008354CD /* AppDelegate.m */,
 				B620FE501D02BB0B008354CD /* Assets.xcassets */,
+				B619C4031D088688002DE025 /* ImageView.h */,
+				B619C4041D088688002DE025 /* ImageView.m */,
 				B620FE551D02BB0B008354CD /* Info.plist */,
 				B620FE521D02BB0B008354CD /* LaunchScreen.storyboard */,
 				B620FE4D1D02BB0B008354CD /* Main.storyboard */,
@@ -238,6 +243,7 @@
 				B620FE491D02BB0B008354CD /* AppDelegate.m in Sources */,
 				B620FE461D02BB0B008354CD /* main.m in Sources */,
 				B620FE601D02BE56008354CD /* UploadViewController.m in Sources */,
+				B619C4051D088688002DE025 /* ImageView.m in Sources */,
 				B620FE5D1D02BE0D008354CD /* SignViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,6 +360,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = sign/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.imixun.sign;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -366,6 +373,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = sign/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.imixun.sign;
 				PRODUCT_NAME = "$(TARGET_NAME)";
