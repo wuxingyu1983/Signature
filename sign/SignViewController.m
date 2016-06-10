@@ -137,7 +137,7 @@
                                                                                                   //@”application/octet-stream”文件的类型，当你不知道时就默认用这个
                                                                                                   [formData appendPartWithFileData:aImageData
                                                                                                                               name:@"file"
-                                                                                                                          fileName:@"sign"
+                                                                                                                          fileName:@"sign.jpg"
                                                                                                                           mimeType:@"application/octet-stream"];
                                                                                                   
                                                                                               } error:nil];
