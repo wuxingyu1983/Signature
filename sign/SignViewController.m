@@ -45,7 +45,7 @@
     signBakImgView.userInteractionEnabled = YES;
     [self.view addSubview:signBakImgView];
 
-    signView = [[PPSSignatureView alloc] initWithFrame:CGRectMake(0, 0, signBakImgView.frame.size.width, signBakImgView.frame.size.height)
+    signView = [[PPSSignatureView alloc] initWithFrame:CGRectMake(10, 10, signBakImgView.frame.size.width - 20, signBakImgView.frame.size.height - 20)
                                                context:[[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2]];
     signView.backgroundColor = [UIColor clearColor];
     signView.strokeColor = [UIColor whiteColor];
