@@ -18,7 +18,6 @@
 @interface UploadViewController ()
 {
     ImageView *signImgBakView;
-    UIImageView *signImgView;
     
     NSInteger iSelected;
     
@@ -53,12 +52,7 @@
    
     // 签名图片
     signImgBakView = [[ImageView alloc] initWithFrame:CGRectMake(184, 256, 520, 312)];
-    signImgBakView.image = [UIImage imageNamed:@"signbackground"];
     [self.view addSubview:signImgBakView];
-
-    signImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, signImgBakView.frame.size.width, signImgBakView.frame.size.height)];
-    signImgView.image = self.signatureImage;
-    [signImgBakView addSubview:signImgView];
 
     // 左箭头
     arrowBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -112,7 +106,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    signImgView.image = self.signatureImage;
+    signImgBakView.image = self.signatureImage;
 }
 
 /*

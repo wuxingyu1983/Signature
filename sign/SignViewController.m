@@ -103,81 +103,83 @@
 
 - (void)next
 {
-    UIImage *img = signView.signatureImage;
-    if (img) {
-        uploadVC = [[UploadViewController alloc] init];
-        uploadVC.delegate = self;
-/*
-        if (nil == uploadVC || nil == uploadVC.pictureID) {
-            // 第一次用，或者已经上传完了，新一次的
+    if (signView.signatureImage) {
+        UIImage *img = [self composeImages];
+        if (img) {
             uploadVC = [[UploadViewController alloc] init];
-        }
-*/
-        if (nil == uploadVC.pictureID) {
-            // 上传图片
-            signBakImgView.userInteractionEnabled = NO;
-            
-            POPBasicAnimation *opacityAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
-            opacityAnimation.toValue = @(1.0);
-            opacityAnimation.duration = 0.2f;
-            [sendingImgView.layer pop_addAnimation:opacityAnimation forKey:@"layerOpacityAnimation"];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                {
-                    NSString *strUrl = @"http://192.168.1.1:8080/server/photo/upload.do";
-//                    NSString *strUrl = @"http://120.203.18.7/server/photo/upload.do";
-                    
-                    NSData *aImageData = UIImageJPEGRepresentation(img, 0.8);
-                    NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST"
-                                                                                                              URLString:strUrl
-                                                                                                             parameters:nil
-                                                                                              constructingBodyWithBlock:^(id formData) {
-                                                                                                  //key服务器地址url上二进制流的关键字字段
-                                                                                                  //file，自定义的文件名
-                                                                                                  //@”application/octet-stream”文件的类型，当你不知道时就默认用这个
-                                                                                                  [formData appendPartWithFileData:aImageData
-                                                                                                                              name:@"file"
-                                                                                                                          fileName:@"sign.jpg"
-                                                                                                                          mimeType:@"application/octet-stream"];
-                                                                                                  
-                                                                                              } error:nil];
-                    
-                    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-                    
-                    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-                    
-                    NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithStreamedRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
-                        //进度条
+            uploadVC.delegate = self;
+            /*
+             if (nil == uploadVC || nil == uploadVC.pictureID) {
+             // 第一次用，或者已经上传完了，新一次的
+             uploadVC = [[UploadViewController alloc] init];
+             }
+             */
+            if (nil == uploadVC.pictureID) {
+                // 上传图片
+                signBakImgView.userInteractionEnabled = NO;
+                
+                POPBasicAnimation *opacityAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+                opacityAnimation.toValue = @(1.0);
+                opacityAnimation.duration = 0.2f;
+                [sendingImgView.layer pop_addAnimation:opacityAnimation forKey:@"layerOpacityAnimation"];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    {
+                        NSString *strUrl = @"http://192.168.1.1:8080/server/photo/upload.do";
+//                        NSString *strUrl = @"http://120.203.18.7/server/photo/upload.do";
                         
-                    } completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
-                        //失败
-                        if (error) {
-                            [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"the url is %@, the error is %@", strUrl, [error localizedDescription]]];
-                            [self uploadFailed];
-                        } else {//成功
-                            [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"the url is %@, the return is %@", strUrl, [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]]];
-                            NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                            if ([@"success" isEqualToString:[dict objectForKey:@"type"]]) {
-                                // 上传成功
-                                NSString *strData = [dict objectForKey:@"data"];
-                                uploadVC.signatureImage = img;
-                                uploadVC.pictureID = strData;
-                                
-                                [self uploadSuccess];
-                            }
-                            else {
-                                // 上传失败
+                        NSData *aImageData = UIImageJPEGRepresentation(img, 0.8);
+                        NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST"
+                                                                                                                  URLString:strUrl
+                                                                                                                 parameters:nil
+                                                                                                  constructingBodyWithBlock:^(id formData) {
+                                                                                                      //key服务器地址url上二进制流的关键字字段
+                                                                                                      //file，自定义的文件名
+                                                                                                      //@”application/octet-stream”文件的类型，当你不知道时就默认用这个
+                                                                                                      [formData appendPartWithFileData:aImageData
+                                                                                                                                  name:@"file"
+                                                                                                                              fileName:@"sign.jpg"
+                                                                                                                              mimeType:@"application/octet-stream"];
+                                                                                                      
+                                                                                                  } error:nil];
+                        
+                        AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+                        
+                        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+                        
+                        NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithStreamedRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+                            //进度条
+                            
+                        } completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+                            //失败
+                            if (error) {
+                                [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"the url is %@, the error is %@", strUrl, [error localizedDescription]]];
                                 [self uploadFailed];
+                            } else {//成功
+                                [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"the url is %@, the return is %@", strUrl, [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]]];
+                                NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                                if ([@"success" isEqualToString:[dict objectForKey:@"type"]]) {
+                                    // 上传成功
+                                    NSString *strData = [dict objectForKey:@"data"];
+                                    uploadVC.signatureImage = img;
+                                    uploadVC.pictureID = strData;
+                                    
+                                    [self uploadSuccess];
+                                }
+                                else {
+                                    // 上传失败
+                                    [self uploadFailed];
+                                }
                             }
-                        }
-                    }];
-                    
-                    [uploadTask resume];
-                }
-            });
-        }
-        else {
-            [self.navigationController pushViewController:uploadVC animated:YES];
+                        }];
+                        
+                        [uploadTask resume];
+                    }
+                });
+            }
+            else {
+                [self.navigationController pushViewController:uploadVC animated:YES];
+            }
         }
     }
 }
@@ -208,6 +210,23 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [SVProgressHUD showErrorWithStatus:@"上传失败，请重试 !"];
     });
+}
+
+- (UIImage *)composeImages
+{
+    UIGraphicsBeginImageContext(CGSizeMake(signBakImgView.frame.size.width, signBakImgView.frame.size.height));
+    
+    // Draw image1
+    [[UIImage imageNamed:@"signbackground"] drawInRect:CGRectMake(0, 0, signBakImgView.frame.size.width, signBakImgView.frame.size.height)];
+    
+    // Draw image2
+    [signView.signatureImage drawInRect:CGRectMake(10, 10, signBakImgView.frame.size.width - 20, signBakImgView.frame.size.height - 20)];
+    
+    UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return resultingImage;
 }
 
 @end
