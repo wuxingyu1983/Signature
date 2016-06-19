@@ -236,12 +236,12 @@
                 if (1 == iSelected) {
                     // 照片墙
 //                    strUrl = [NSString stringWithFormat:@"http://120.203.18.7/server/cmd/send.do?flash=ZPQ_%@", self.pictureID];
-                    strUrl = [NSString stringWithFormat:@"http://192.168.1.1:8080/server/cmd/send.do?flash=ZPQ,%@", self.pictureID];
+                    strUrl = [NSString stringWithFormat:@"http://192.168.2.1:8080/server/cmd/send.do?flash=ZPQ,%@", self.pictureID];
                 }
                 else {
                     // 主题墙
 //                    strUrl = [NSString stringWithFormat:@"http://120.203.18.7/server/cmd/send.do?flash=HYC_%@", self.pictureID];
-                    strUrl = [NSString stringWithFormat:@"http://192.168.1.1:8080/server/cmd/send.do?flash=HYC,%@", self.pictureID];
+                    strUrl = [NSString stringWithFormat:@"http://192.168.2.1:8080/server/cmd/send.do?flash=HYC,%@", self.pictureID];
                 }
                 
                 NSURL * url = [NSURL URLWithString:strUrl];
@@ -250,7 +250,9 @@
                                                                 completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
                                                                     if(error == nil)
                                                                     {
+/*
                                                                         [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"the url is %@, the return is %@", strUrl, [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]]];
+*/
                                                                         NSDictionary *responseObject = [NSJSONSerialization JSONObjectWithData:data
                                                                                                                                        options:NSJSONReadingMutableContainers
                                                                                                                                          error:nil];
@@ -268,7 +270,9 @@
                                                                         }
                                                                     }
                                                                     else {
+/*
                                                                         [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"the url is %@, the error is %@", strUrl, [error localizedDescription]]];
+*/
                                                                         [self sendFailed];
                                                                     }
                                                                 }];

@@ -125,7 +125,7 @@
                 
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     {
-                        NSString *strUrl = @"http://192.168.1.1:8080/server/photo/upload.do";
+                        NSString *strUrl = @"http://192.168.2.1:8080/server/photo/upload.do";
 //                        NSString *strUrl = @"http://120.203.18.7/server/photo/upload.do";
                         
                         NSData *aImageData = UIImageJPEGRepresentation(img, 0.8);
@@ -153,10 +153,14 @@
                         } completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
                             //失败
                             if (error) {
+/*
                                 [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"the url is %@, the error is %@", strUrl, [error localizedDescription]]];
+*/
                                 [self uploadFailed];
                             } else {//成功
+/*
                                 [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"the url is %@, the return is %@", strUrl, [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]]];
+*/
                                 NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                                 if ([@"success" isEqualToString:[dict objectForKey:@"type"]]) {
                                     // 上传成功
