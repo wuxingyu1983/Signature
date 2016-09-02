@@ -51,9 +51,9 @@
     [self.view addSubview:backBtn];
    
     // 签名图片
-    signImgBakView = [[ImageView alloc] initWithFrame:CGRectMake(184, 256, 520, 312)];
+    signImgBakView = [[ImageView alloc] initWithFrame:CGRectMake((Screen_Width - 520) / 2, 256, 520, 312)];
     [self.view addSubview:signImgBakView];
-
+#if 0
     // 左箭头
     arrowBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     arrowBtn.frame = CGRectMake(Screen_Width - 80, (Screen_Height - 80) / 2, 40, 80);
@@ -80,11 +80,11 @@
     [termBakView addSubview:themeBtn];
     
     [self refreshBtn];
-    
+#endif
     // 提示
     tipsImgView = [[UIImageView alloc] initWithFrame:CGRectMake(432, 60, 160, 69)];
     tipsImgView.image = [UIImage imageNamed:@"tips"];
-    tipsImgView.layer.opacity = 0.0;
+//    tipsImgView.layer.opacity = 0.0;
     [self.view addSubview:tipsImgView];
 
     tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -95,7 +95,7 @@
     
     panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                    action:@selector(handlePan:)];
-    panGestureRecognizer.enabled = NO;
+//    panGestureRecognizer.enabled = NO;
     [signImgBakView addGestureRecognizer:panGestureRecognizer];
 }
 
@@ -236,12 +236,12 @@
                 if (1 == iSelected) {
                     // 照片墙
 //                    strUrl = [NSString stringWithFormat:@"http://120.203.18.7/server/cmd/send.do?flash=ZPQ_%@", self.pictureID];
-                    strUrl = [NSString stringWithFormat:@"http://192.168.2.1:8080/server/cmd/send.do?flash=ZPQ,%@", self.pictureID];
+                    strUrl = [NSString stringWithFormat:@"http://192.168.3.10:8080/server/cmd/send.do?flash=33,%@", self.pictureID];
                 }
                 else {
                     // 主题墙
 //                    strUrl = [NSString stringWithFormat:@"http://120.203.18.7/server/cmd/send.do?flash=HYC_%@", self.pictureID];
-                    strUrl = [NSString stringWithFormat:@"http://192.168.2.1:8080/server/cmd/send.do?flash=HYC,%@", self.pictureID];
+                    strUrl = [NSString stringWithFormat:@"http://192.168.3.10:8080/server/cmd/send.do?flash=33,%@", self.pictureID];
                 }
                 
                 NSURL * url = [NSURL URLWithString:strUrl];

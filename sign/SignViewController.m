@@ -125,7 +125,7 @@
                 
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     {
-                        NSString *strUrl = @"http://192.168.2.1:8080/server/photo/upload.do";
+                        NSString *strUrl = @"http://192.168.3.10:8080/server/photo/upload.do";
 //                        NSString *strUrl = @"http://120.203.18.7/server/photo/upload.do";
                         
                         NSData *aImageData = UIImageJPEGRepresentation(img, 0.8);
